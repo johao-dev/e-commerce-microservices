@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
 import zuzz.projects.e_commerce.microservices.common_exceptions.ErrorResponse;
 import zuzz.projects.e_commerce.microservices.common_exceptions.GlobalExceptionHandler;
 
+@Slf4j
 @Primary
 @RestControllerAdvice(basePackages = "zuzz.projects.e_commerce.microservices.customer_microservice")
 public class CustomerExceptionHandler extends GlobalExceptionHandler {
@@ -21,6 +23,7 @@ public class CustomerExceptionHandler extends GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         String fieldName = "customer";
         errors.put(fieldName, ex.getMessage());
+        log.warn("Customer not found: {}", ex.toString());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(errors));
     }
 }

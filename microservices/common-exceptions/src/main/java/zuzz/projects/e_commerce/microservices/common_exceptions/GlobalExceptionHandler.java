@@ -10,8 +10,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -22,6 +25,7 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
+        log.warn("Validation Error: {}", ex.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors));
     }
 
@@ -31,6 +35,7 @@ public class GlobalExceptionHandler {
         String fieldName = "message";
         String errorMessage = "Se ha producido un error. Por favor, contacte con el administrador o intente más tarde.";
         errors.put(fieldName, errorMessage);
+        log.error("Error: {}", ex.toString());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(errors));
     }
 }
