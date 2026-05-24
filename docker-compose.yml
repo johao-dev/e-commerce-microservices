@@ -8,6 +8,8 @@ services:
     volumes:
       - mongo:/data
     restart: always
+    networks:
+      - microservices
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=pass
